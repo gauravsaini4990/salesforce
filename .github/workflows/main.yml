@@ -26,41 +26,8 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
             
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3.1.1
-        with:
-          node-version: '>=14'
-          check-latest: true
-
-      - name: Install Salesforce CLI
+      - name: print secrets
+        shell: bash
         run: |
-          npm install sfdx-cli
-          node_modules/sfdx-cli/bin/run --version
-          node_modules/sfdx-cli/bin/run plugins --core
-                
-      - name: Directory structure
-        working-directory: ./user-registeration
-        run: ls -ltr
-        
-      - name: Authenticate against dev hub
-        working-directory: ./user-registeration
-        run: |
-          echo ${{ secrets.SFDC }} >> sfdcCred.json
-          ls -ltr
-          ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./authfile.json -d -a devhub
-        
-      - name: List Salesforce orgs
-        working-directory: ./user-registeration
-        run: ../node_modules/sfdx-cli/bin/run force:org:list --json
-        
-      - name: Create Scratch org
-        working-directory: ./user-registeration
-        run: ../node_modules/sfdx-cli/bin/run force:org:create -f ./config/project-scratch-def.json -d 1 -a userReg
-        
-      - name: Push Source file
-        working-directory: ./user-registeration
-        run: ../node_modules/sfdx-cli/bin/run force:source:push -u userReg -f
-
-      - name: Delete Scratch org
-        working-directory: ./user-registeration
-        run: ../node_modules/sfdx-cli/bin/run force:org:delete -u userReg -p
+			    echo ${{secrets.SFDC}} >> user-registeration/sfdcAuth.json
+          cat user-registeration/sfdcAuth.json
