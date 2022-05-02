@@ -36,7 +36,7 @@ jobs:
         shell: bash
         run: |
           'echo ${{secrets.SFDX}} > DEV_HUB'
-          'echo DEV_HUB'
+          'echo $DEV_HUB'
         
       - name: Authenticate against dev hub
         run: node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f DEV_HUB -s -a devhub --json
