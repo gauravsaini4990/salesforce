@@ -1,11 +1,11 @@
-# This is a basic workflow to elp you get started with Actions
+/# This is a basic workflow to elp you get started with Actions
 
 name: CI
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
+  # Triggers t.he workflow on push or pull request events but only for the main branch
+  push:/
     branches: [ main ]
   pull_request:
     branches: [ main ]
@@ -40,7 +40,8 @@ jobs:
         run: ls -ltr
         
       - name: Push Source file
-        run: node_modules/sfdx-cli/bin/run force:source:push -u userReg -f
+        working-directory: ./user-registeration
+        run: ../node_modules/sfdx-cli/bin/run force:source:push -u userReg -f
 
       - name: Delete Scratch org
         run: node_modules/sfdx-cli/bin/run force:org:delete -u userReg
