@@ -1,4 +1,4 @@
-# This is a basic workflow to elp you get started with Actions
+Be# This is a basic workflow to elp you get started with Actions
 
 name: CI
 
@@ -31,8 +31,15 @@ jobs:
           npm install sfdx-cli
           node_modules/sfdx-cli/bin/run --version
           node_modules/sfdx-cli/bin/run plugins --core
-
-      - name: Install Salesforce CLI
+          
+      - name: Populate auth from secrets
+        shell: bash
+        run: 'echo ${{secret.SFDX}} >DEV_HUB'
+        
+      - name: Authenticate against dev hub
+        run: node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f DEV_HUB -s -a devhub --json
+        
+      - name: List Salesforce orgs
         run: node_modules/sfdx-cli/bin/run force:org:list --json
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
