@@ -32,9 +32,9 @@ jobs:
           node_modules/sfdx-cli/bin/run --version
           node_modules/sfdx-cli/bin/run plugins --core
           
-      - name: Populate auth from secrets
+      #- name: Populate auth from secrets
         #shell: bash
-        run: echo ${{secrets.SFDC}}
+      #  run: echo ${{secrets.SFDC}}
         
       - name: Authenticate against dev hub
         run: node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ${{secrets.SFDC}} -s -a devhub --json
