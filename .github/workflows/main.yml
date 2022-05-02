@@ -31,53 +31,15 @@ jobs:
         
       - name: Populate auth from secrets
         run: ls -ltr
-        
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3.1.1
-        with:
-          node-version: '>=14'
-          check-latest: true
-
-      - name: Install Salesforce CLI
-        run: |
-          npm install sfdx-cli
-          node_modules/sfdx-cli/bin/run --version
-          node_modules/sfdx-cli/bin/run plugins --core
-          
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
-
-      - name: Populate auth from secrets
-        run: ls -ltr
-        
-      #- name: navigate to working directory
-        #run: cd user-registeration
-        
-      - name: Authenticate against dev hub
-        run: node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./user-registeration/authfile.json -d -a devhub
-        
-      - name: List Salesforce orgs
-        run: node_modules/sfdx-cli/bin/run force:org:list --json
-        
-      #- name: Create Scratch org
-      #  run: node_modules/sfdx-cli/bin/run force:org:create -f ./user-registeration/config/project-scratch-def.json -d 1 -a userReg
-
+      
       - name: navigate to working directory
-        run: cd user-registeration/
+        run: cd user-registeration
       
       - name: Directory structure
         run: ls -ltr
         
       - name: navigate to working directory
-        run: cd user-registeration/
+        run: cd user-registeration
   
       - name: Directory structure
         run: ls -ltr
