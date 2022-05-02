@@ -1,4 +1,4 @@
-# This is a basic workflow to elp you get started with Actions
+/# This is a basic workflow to elp you get started with Actions
 
 name: CI
 
@@ -29,5 +29,5 @@ jobs:
       - name: print secrets
         shell: bash
         run: |
-			    echo ${{secrets.SFDC}} >> user-registeration/sfdcAuth.json
-          cat user-registeration/sfdcAuth.json
+          echo ${{secrets.SFDC}} >> ./user-registeration/sfdcAuth.json
+          cat ./user-registeration/sfdcAuth.json
