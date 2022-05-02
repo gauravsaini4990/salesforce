@@ -34,8 +34,7 @@ jobs:
           
       - name: Populate auth from secrets
         shell: bash
-        run: |
-          'echo ${{secrets.SFDC}} > DEV_HUB'
+        run: 'echo ${{secrets.SFDC}} > DEV_HUB'
         
       - name: Authenticate against dev hub
         run: node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f DEV_HUB -s -a devhub --json
