@@ -1,4 +1,4 @@
-@isTes
+@isTest
 public class TestFactory {
     
     public static Account createAccount(Boolean doInsert){
@@ -25,8 +25,7 @@ public class TestFactory {
         //Create Opportunity
         Opportunity testOpportunity = new Opportunity(Name = 'Test test', AccountId = acc.Id, CloseDate = System.today(),
                                                       StageName = 'Project Awarded', Amount = 500000,
-                                                      Type = 'Turnkey System',
-                                                      RecordTypeId = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Standard Opportunity').getRecordTypeId());
+                                                      Type = 'Turnkey System');
         if(doInsert) insert testOpportunity;
         
         return testOpportunity;
