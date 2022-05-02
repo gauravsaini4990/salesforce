@@ -44,7 +44,10 @@ jobs:
         
       - name: Authenticate against dev hub
         working-directory: ./user-registeration
-        run: ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./authfile.json -d -a devhub
+        run: |
+          echo ${{ secrets.SFDC }} >> sfdcCred.json
+          ls -ltr
+          ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./authfile.json -d -a devhub
         
       - name: List Salesforce orgs
         working-directory: ./user-registeration
