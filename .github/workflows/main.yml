@@ -27,5 +27,5 @@ jobs:
         shell: bash
         run: |
           ls -ltr
-          echo "Nice work" >> src/.env
-          cat src/.env
+          echo "Nice work" >> env.json
+          cat env.json
