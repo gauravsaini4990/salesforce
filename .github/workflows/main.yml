@@ -25,11 +25,11 @@ jobs:
     
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.1.1
-		
+
       - name: Install Salesforce CLI
         run: |
         npm install sfdx-cli
-	node_modules/sfdx-cli/bin/run --version
+        node_modules/sfdx-cli/bin/run --version
         node_modules/sfdx-cli/bin/run plugins --core
 
       - name: Install Salesforce CLI
