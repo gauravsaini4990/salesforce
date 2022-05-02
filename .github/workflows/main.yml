@@ -60,4 +60,4 @@ jobs:
 
       - name: Delete Scratch org
         working-directory: ./user-registeration
-        run: ../node_modules/sfdx-cli/bin/run force:org:delete -u userReg
+        run: ../node_modules/sfdx-cli/bin/run force:org:delete -u userReg -p
