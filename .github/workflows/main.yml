@@ -67,11 +67,11 @@ jobs:
       - name: Create Scratch org
         run: node_modules/sfdx-cli/bin/run force:org:create -f ./user-registeration/config/project-scratch-def.json -d 1 -a userReg
 
-      - name: navigate to working directory
-        run: cd user-registeration
+      #- name: navigate to working directory
+      # run: cd user-registeration
       
       - name: Push Source file
-        run: ./node_modules/sfdx-cli/bin/run force:source:push -u userReg -f
+        run: node_modules/sfdx-cli/bin/run force:source:push -u userReg -f
 
       - name: Delete Scratch org
         run: node_modules/sfdx-cli/bin/run force:org:delete -u userReg
