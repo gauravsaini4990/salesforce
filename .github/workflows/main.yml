@@ -51,7 +51,7 @@ jobs:
       - name: Populate auth from secrets
         run: ls -ltr
         
-      - name: navigate to working directory
+      #- name: navigate to working directory
         #run: cd user-registeration
         
       - name: Authenticate against dev hub
