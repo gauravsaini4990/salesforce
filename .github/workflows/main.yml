@@ -67,11 +67,11 @@ jobs:
       - name: List Salesforce orgs
         run: node_modules/sfdx-cli/bin/run force:org:list --json
         
-      - name: Create Scratch org
-        run: node_modules/sfdx-cli/bin/run force:org:create -f ./user-registeration/config/project-scratch-def.json -d 1 -a userReg
+      #- name: Create Scratch org
+      #  run: node_modules/sfdx-cli/bin/run force:org:create -f ./user-registeration/config/project-scratch-def.json -d 1 -a userReg
 
       - name: navigate to working directory
-        run: cd user-registeration/user-registeration
+        run: cd user-registeration/
       
       - name: Directory structure
         run: ls -ltr
