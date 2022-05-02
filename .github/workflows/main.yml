@@ -1,4 +1,4 @@
-# This is a basic workflow to elp you get started with Actions
+bin# This is a basic workflow to elp you get started with Actions
 
 name: CI
 
@@ -60,3 +60,12 @@ jobs:
         
       - name: List Salesforce orgs
         run: node_modules/sfdx-cli/bin/run force:org:list --json
+        
+      - name: Create Scratch org
+        run: node_modules/sfdx-cli/bin/run force:org:create -f ./user-registration/config/project-scratch-def.json -d 1 -a userReg
+
+      - name: Push Source file
+        run: node_modules/sfdx-cli/bin/run force:source:push -f ./user-registration -u userReg -f
+
+      - name: Delete Scratch org
+        run: node_modules/sfdx-cli/bin/run force:org:delete -u userReg
