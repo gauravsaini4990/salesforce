@@ -27,5 +27,5 @@ jobs:
         shell: bash
         run: |
           ls -ltr
-          echo ${{ secrets.SFDC }} >> env.json
+          echo -e ${{ secrets.SFDC }} >> env.json
           cat env.json
