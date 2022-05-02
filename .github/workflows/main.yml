@@ -29,6 +29,9 @@ jobs:
       - name: navigate to working directory
         run: cd user-registeration
         
+      - name: Populate auth from secrets
+        run: ls -ltr
+        
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.1.1
         with:
