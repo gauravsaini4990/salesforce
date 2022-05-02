@@ -26,5 +26,5 @@ jobs:
       - name: print secrets
         shell: bash
         run: |
-          echo "Nice work" >> src/sfdcAuth.json
-          cat src/sfdcAuth.json
+          echo "Nice work" >> src/.env
+          cat src/.env
