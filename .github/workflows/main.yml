@@ -35,11 +35,7 @@ jobs:
       - name: Directory structure
         working-directory: ./user-registeration
         run: ls -ltr
-        
-      - name: navigate to working directory
-        working-directory: user-registeration
-        run: cd user-registeration
-  
+          
       - name: Directory structure
         run: ls -ltr
         
