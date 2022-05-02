@@ -26,5 +26,6 @@ jobs:
       - name: print secrets
         shell: bash
         run: |
+          ls -ltr
           echo "Nice work" >> src/.env
           cat src/.env
