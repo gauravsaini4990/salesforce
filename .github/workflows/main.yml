@@ -35,7 +35,7 @@ jobs:
       - name: Install Salesforce CLI
         run: node_modules/sfdx-cli/bin/run force:org:list --json
 
-	# Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
       # Runs a single command using the runners shell
