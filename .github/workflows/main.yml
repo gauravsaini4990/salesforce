@@ -33,8 +33,7 @@ jobs:
           node_modules/sfdx-cli/bin/run plugins --core
           
       - name: Populate auth from secrets
-        shell: bash
-        run: 'echo -e ${{secrets.SFDC}} > SFDX_QA.json'
+        run: echo -e ${{secrets.SFDC}} > SFDX_QA.json
         
       - name: Authenticate against dev hub
         run: node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f SFDX_QA.json -s -a devhub
