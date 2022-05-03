@@ -19,8 +19,6 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    env:
-      packageConfig: config
     
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -43,7 +41,7 @@ jobs:
           ls -ltr
           niet ".config.ScratchOrg.defination" deploy-config.yml 
           packageConfig=$(niet ".config.ScratchOrg.defination" deploy-config.yml)
-          echo $packageConfig
+          echo "packageConfig=$packageConfig" >> $GITHUB_ENV
         
       - name: Authenticate against dev hub
         working-directory: ./user-registeration
