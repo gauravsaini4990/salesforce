@@ -39,14 +39,15 @@ jobs:
         working-directory: ./user-registeration
         run: |
           ls -ltr
-          niet ".config.ScratchOrg.defination" deploy-config.yml 
-          packageConfig=$(niet ".config.ScratchOrg.defination" deploy-config.yml)
-          echo "packageConfig=$packageConfig" >> $GITHUB_ENV
+          project=$(niet -f json .config deploy-config.yml)
+          echo "project=$project" >> $GITHUB_ENV
         
       - name: Authenticate against dev hub
         working-directory: ./user-registeration
         run: |
-          echo $packageConfig
+          niet .ScratchOrg.defination <<< $project
+          niet .ScratchOrg.dependency <<< $project  
+          niet .ScratchOrg.apexSuit <<< $project         
           echo '${{ secrets.SFDC }}' >> sfdcCred.json
           ls -ltr
           ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCred.json -d -a devhub
