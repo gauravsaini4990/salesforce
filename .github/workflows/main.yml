@@ -32,6 +32,12 @@ jobs:
           node-version: '>=14'
           check-latest: true
 
+      - name: Install Salesforce CLI
+        run: |
+          npm install sfdx-cli
+          node_modules/sfdx-cli/bin/run --version
+          node_modules/sfdx-cli/bin/run plugins --core
+
       - name: install yaml parser
         run: pip install -U niet       
         
@@ -40,20 +46,20 @@ jobs:
         run: |
           ls -ltr
         
-      - name: Authenticate against dev hub
+      - name: Setup ScratchOrg
         working-directory: ./user-registeration
         run: |
           project=$(niet -f json .config deploy-config.yml)
-          niet .ScratchOrg.defination <<< $project
+          def=$(niet .ScratchOrg.defination <<< $project)
+          name=$(niet .ScratchOrg.name <<< $project)
+          alive=$(niet .ScratchOrg.alive <<< $project)
+          wait=$(niet .ScratchOrg.wait <<< $project)
           niet .ScratchOrg.dependency <<< $project  
           niet .ScratchOrg.apexSuit <<< $project         
           echo '${{ secrets.SFDC }}' >> sfdcCred.json
           ls -ltr
           ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCred.json -d -a devhub
-        
-      - name: List Salesforce orgs
-        working-directory: ./user-registeration
-        run: |
-          echo $packageConfig
           ../node_modules/sfdx-cli/bin/run force:org:list --json
-        
+          ../node_modules/sfdx-cli/bin/run force:org:create -f $def -d $alive -a $name
+          for el in $(niet .ScratchOrg.dependency <<< $project); do echo ${el}; done
+          for el in $(niet .ScratchOrg.dependency <<< $project); do ../node_modules/sfdx-cli/bin/run force:package:install -p ${el} -u $name -w $wait; done
