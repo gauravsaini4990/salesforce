@@ -39,12 +39,11 @@ jobs:
         working-directory: ./user-registeration
         run: |
           ls -ltr
-          project=$(niet -f json .config deploy-config.yml)
-          echo "project=$project" >> $GITHUB_ENV
         
       - name: Authenticate against dev hub
         working-directory: ./user-registeration
         run: |
+          project=$(niet -f json .config deploy-config.yml)
           niet .ScratchOrg.defination <<< $project
           niet .ScratchOrg.dependency <<< $project  
           niet .ScratchOrg.apexSuit <<< $project         
