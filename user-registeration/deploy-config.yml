@@ -4,7 +4,7 @@ config:
         name: 'user-register-scratchOrg'
         defination: 'config/project-scratch-def.json'
         alive: 1
-        wait: 10
+        wait: 30
         dependency:
             - 04t3b000000gkdZAAQ
             - 04t3o000001dBnsAAE
