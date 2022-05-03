@@ -45,7 +45,8 @@ jobs:
         working-directory: ./user-registeration
         run: |
           ls -ltr
-          niet deploy-config.yml App
+          packageConfig = $(niet ".config.ScratchOrg.defination" deploy-config.yml)
+          echo packageConfig
         
       - name: Authenticate against dev hub
         working-directory: ./user-registeration
