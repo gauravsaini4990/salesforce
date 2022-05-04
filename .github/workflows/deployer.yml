@@ -39,7 +39,7 @@ jobs:
 
       - name: Non-Approved PR
         uses: peter-evans/create-or-update-comment@v2
-        if: github.event_name == 'pull_request' && !github.event.review.state == 'approved'
+        if: github.event_name == 'pull_request' && github.event.review.state != 'approved'
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
