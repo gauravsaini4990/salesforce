@@ -63,5 +63,5 @@ jobs:
           for el in $(niet -s .ScratchOrg.dependency <<< $project); do ../node_modules/sfdx-cli/bin/run force:package:install -p ${el} -r -u $name -w $wait; done
           ../node_modules/sfdx-cli/bin/run force:package:installed:list -u $name
           ../node_modules/sfdx-cli/bin/run force:source:push -u $name -f
-          ../node_modules/sfdx-cli/bin/run force:apex:test:run -s $apexSuit -c -v -r
+          ../node_modules/sfdx-cli/bin/run force:apex:test:run -s $apexSuit -c -v -r human
           ../node_modules/sfdx-cli/bin/run force:org:delete -u $name -p
