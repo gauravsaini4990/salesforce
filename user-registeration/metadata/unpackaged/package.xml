@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>Account.Job_Type__c</members>
+        <members>Account.Procore_Vendor_ID__c</members>
+        <members>Account.Small_Business_Type__c</members>
+        <members>Contact.Contact_Type__c</members>
+        <members>Contact.Is_Billing_Contact__c</members>
+        <members>Contact.Primary_Contact__c</members>
+        <members>Opportunity.Opp_Notes__c</members>
+        <members>Opportunity.Procore_Project_ID__c</members>
+        <members>Opportunity.Proposed_Installation_Types__c</members>
+        <members>Opportunity.Team__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>URLBoomiAPI</members>
+        <name>CustomLabel</name>
+    </types>
+    <types>
+        <members>BoomiServiceEndPoints__mdt.Create_Customer</members>
+        <members>BoomiServiceEndPoints__mdt.Create_Project</members>
+        <name>CustomMetadata</name>
+    </types>
+    <version>54.0</version>
+</Package>

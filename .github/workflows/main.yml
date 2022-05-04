@@ -49,19 +49,21 @@ jobs:
       - name: Setup ScratchOrg
         working-directory: ./user-registeration
         run: |
-          project=$(niet -f json .config deploy-config.yml)
-          def=$(niet .ScratchOrg.defination <<< $project)
-          name=$(niet .ScratchOrg.name <<< $project)
-          alive=$(niet .ScratchOrg.alive <<< $project)
-          wait=$(niet .ScratchOrg.wait <<< $project)
-          apexSuit=$(niet .ScratchOrg.apexSuit <<< $project)
+          scratchOrg=$(niet -f json .scratch_org deploy-config.yml)
+          def=$(niet .definition_file <<< $scratchOrg)
+          alias=$(niet .alias <<< $scratchOrg)
+          alive=$(niet .alive <<< $scratchOrg)
+          wait=$(niet .wait <<< $scratchOrg)
+          apexSuit=$(niet .apex_suite <<< $scratchOrg)
+          metadata_path=$(niet .metadata <<< $scratchOrg)
           echo '${{ secrets.SFDC }}' >> sfdcCred.json
           ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCred.json -d -a devhub
           ../node_modules/sfdx-cli/bin/run force:org:list --json
-          ../node_modules/sfdx-cli/bin/run force:org:create -f $def -d $alive -a $name -s
+          ../node_modules/sfdx-cli/bin/run force:org:create -f $def -d $alive -a $alias -w $wait -s
           ../node_modules/sfdx-cli/bin/run force:org:list
-          for el in $(niet -s .ScratchOrg.dependency <<< $project); do ../node_modules/sfdx-cli/bin/run force:package:install -p ${el} -r -u $name -w $wait; done
+          for el in $(niet -s .dependencies <<< $scratchOrg); do ../node_modules/sfdx-cli/bin/run force:package:install -p ${el} -r -w $wait; done
           ../node_modules/sfdx-cli/bin/run force:package:installed:list
           ../node_modules/sfdx-cli/bin/run force:source:push -f
-          ../node_modules/sfdx-cli/bin/run force:apex:test:run -s $apexSuit -c -v -r human
+          if [ $metadata_path ]; then ../node_modules/sfdx-cli/bin/run force:mdapi:deploy -d $metadata_path -w $wait; fi
+          if [ $apexSuit ]; then ../node_modules/sfdx-cli/bin/run force:apex:test:run -s $apexSuit -c -v -r human; fi
           ../node_modules/sfdx-cli/bin/run force:org:delete -p

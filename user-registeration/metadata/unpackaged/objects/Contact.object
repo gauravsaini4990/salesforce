@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>Contact_Type__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>should define the role this contact is playing in their relationship with Borrego.</inlineHelpText>
+        <label>Contact Type</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Service Contact</fullName>
+                    <default>false</default>
+                    <label>Service Contact</label>
+                </value>
+                <value>
+                    <fullName>Host Contact</fullName>
+                    <default>false</default>
+                    <label>Host Contact</label>
+                </value>
+                <value>
+                    <fullName>Billing Contact</fullName>
+                    <default>false</default>
+                    <label>Billing Contact</label>
+                </value>
+                <value>
+                    <fullName>Owner Contact</fullName>
+                    <default>false</default>
+                    <label>Owner Contact</label>
+                </value>
+                <value>
+                    <fullName>Primary Contact</fullName>
+                    <default>false</default>
+                    <label>Primary Contact</label>
+                </value>
+                <value>
+                    <fullName>Sales Contact</fullName>
+                    <default>false</default>
+                    <label>Sales Contact</label>
+                </value>
+                <value>
+                    <fullName>Sales Decision-Maker</fullName>
+                    <default>false</default>
+                    <label>Sales Decision-Maker</label>
+                </value>
+                <value>
+                    <fullName>Reference</fullName>
+                    <default>false</default>
+                    <label>Reference</label>
+                </value>
+                <value>
+                    <fullName>Not Yet Identified</fullName>
+                    <default>false</default>
+                    <label>Not Yet Identified</label>
+                </value>
+                <value>
+                    <fullName>Portal User</fullName>
+                    <default>false</default>
+                    <label>Portal User</label>
+                </value>
+                <value>
+                    <fullName>Primary O&amp;M Contact</fullName>
+                    <default>false</default>
+                    <label>Primary O&amp;M Contact</label>
+                </value>
+                <value>
+                    <fullName>Technical Contact</fullName>
+                    <default>false</default>
+                    <label>Technical Contact</label>
+                </value>
+                <value>
+                    <fullName>Primary Technical Contact</fullName>
+                    <default>false</default>
+                    <label>Primary Technical Contact</label>
+                </value>
+                <value>
+                    <fullName>O&amp;M Billing Contact</fullName>
+                    <default>false</default>
+                    <label>O&amp;M Billing Contact</label>
+                </value>
+                <value>
+                    <fullName>O&amp;M Service Billing Contact</fullName>
+                    <default>false</default>
+                    <label>O&amp;M Service Billing Contact</label>
+                </value>
+                <value>
+                    <fullName>Employee</fullName>
+                    <default>false</default>
+                    <label>Employee</label>
+                </value>
+                <value>
+                    <fullName>O&amp;M Performance Report Contact</fullName>
+                    <default>false</default>
+                    <label>O&amp;M Performance Report Contact</label>
+                </value>
+                <value>
+                    <fullName>O&amp;M Case Closure Report Contact</fullName>
+                    <default>false</default>
+                    <label>O&amp;M Case Closure Report Contact</label>
+                </value>
+                <value>
+                    <fullName>Amex Contact</fullName>
+                    <default>false</default>
+                    <label>Amex Contact</label>
+                </value>
+                <value>
+                    <fullName>Waiver Contact</fullName>
+                    <default>false</default>
+                    <label>Waiver Contact</label>
+                </value>
+                <value>
+                    <fullName>O&amp;M Purchasing</fullName>
+                    <default>false</default>
+                    <label>O&amp;M Purchasing</label>
+                </value>
+                <value>
+                    <fullName>EPC Contact</fullName>
+                    <default>false</default>
+                    <label>EPC Contact</label>
+                </value>
+                <value>
+                    <fullName>Development Contact</fullName>
+                    <default>false</default>
+                    <label>Development Contact</label>
+                </value>
+                <value>
+                    <fullName>O&amp;M New Case Contact</fullName>
+                    <default>false</default>
+                    <label>O&amp;M New Case Contact</label>
+                </value>
+                <value>
+                    <fullName>O&amp;M Completed Work Order Contact</fullName>
+                    <default>false</default>
+                    <label>O&amp;M Completed Work Order Contact</label>
+                </value>
+                <value>
+                    <fullName>Anza Contact</fullName>
+                    <default>false</default>
+                    <label>Anza Contact</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Is_Billing_Contact__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( INCLUDES( Contact_Type__c, &quot;Billing Contact&quot;), TRUE, FALSE)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Is Billing Contact</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Primary_Contact__c</fullName>
+        <description>DO NOT USE.   REPLACED BY CONTACT TYPE AND FORMULA FIELD PRIMARY CONTACT 2.</description>
+        <externalId>false</externalId>
+        <label>Primary Contact</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>No</fullName>
+                    <default>false</default>
+                    <label>No</label>
+                </value>
+                <value>
+                    <fullName>Yes</fullName>
+                    <default>false</default>
+                    <label>Yes</label>
+                </value>
+                <value>
+                    <fullName>Unknown</fullName>
+                    <default>false</default>
+                    <label>Unknown</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+</CustomObject>
