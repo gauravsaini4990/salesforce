@@ -56,7 +56,7 @@ jobs:
           wait=$(niet .wait <<< $scratchOrg)
           apexSuit=$(niet .apex_suite <<< $scratchOrg)
           metadata_path=$(niet .metadata <<< $scratchOrg)
-          echo '${{ secrets.SFDC }}' >> sfdcCred.json
+          echo '${{ secrets.MY_DEVHUB }}' >> sfdcCred.json
           ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCred.json -d -a devhub
           ../node_modules/sfdx-cli/bin/run force:org:list --json
           ../node_modules/sfdx-cli/bin/run force:org:create -f $def -d $alive -a $alias -w $wait -s
