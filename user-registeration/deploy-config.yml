@@ -1,0 +1,15 @@
+App: 'user-register'
+config:
+    ScratchOrg:
+        name: 'user-register-scratchOrg'
+        defination: 'config/project-scratch-def.json'
+        alive: 1
+        wait: 30
+        dependency:
+            #- 04t3b000000gkdZAAQ
+            #- 04t3o000001dBnsAAE
+        metadata: ''
+        apexSuit: 'user_Registeration'
+    Package:
+        name: 'user-registeration'
+        wait: 10

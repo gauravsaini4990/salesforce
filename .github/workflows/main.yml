@@ -19,7 +19,7 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-      
+    
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
 
@@ -37,30 +37,31 @@ jobs:
           npm install sfdx-cli
           node_modules/sfdx-cli/bin/run --version
           node_modules/sfdx-cli/bin/run plugins --core
-                
+
+      - name: install yaml parser
+        run: pip install -U niet       
+        
       - name: Directory structure
         working-directory: ./user-registeration
-        run: ls -ltr
+        run: |
+          ls -ltr
         
-      - name: Authenticate against dev hub
+      - name: Setup ScratchOrg
         working-directory: ./user-registeration
         run: |
+          project=$(niet -f json .config deploy-config.yml)
+          def=$(niet .ScratchOrg.defination <<< $project)
+          name=$(niet .ScratchOrg.name <<< $project)
+          alive=$(niet .ScratchOrg.alive <<< $project)
+          wait=$(niet .ScratchOrg.wait <<< $project)
+          apexSuit=$(niet .ScratchOrg.apexSuit <<< $project)
           echo '${{ secrets.SFDC }}' >> sfdcCred.json
-          ls -ltr
           ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCred.json -d -a devhub
-        
-      - name: List Salesforce orgs
-        working-directory: ./user-registeration
-        run: ../node_modules/sfdx-cli/bin/run force:org:list --json
-        
-      - name: Create Scratch org
-        working-directory: ./user-registeration
-        run: ../node_modules/sfdx-cli/bin/run force:org:create -f ./config/project-scratch-def.json -d 1 -a userReg
-        
-      - name: Push Source file
-        working-directory: ./user-registeration
-        run: ../node_modules/sfdx-cli/bin/run force:source:push -u userReg -f
-
-      - name: Delete Scratch org
-        working-directory: ./user-registeration
-        run: ../node_modules/sfdx-cli/bin/run force:org:delete -u userReg -p
+          ../node_modules/sfdx-cli/bin/run force:org:list --json
+          ../node_modules/sfdx-cli/bin/run force:org:create -f $def -d $alive -a $name -s
+          ../node_modules/sfdx-cli/bin/run force:org:list
+          for el in $(niet -s .ScratchOrg.dependency <<< $project); do ../node_modules/sfdx-cli/bin/run force:package:install -p ${el} -r -u $name -w $wait; done
+          ../node_modules/sfdx-cli/bin/run force:package:installed:list
+          ../node_modules/sfdx-cli/bin/run force:source:push -f
+          ../node_modules/sfdx-cli/bin/run force:apex:test:run -s $apexSuit -c -v -r human
+          ../node_modules/sfdx-cli/bin/run force:org:delete -p
