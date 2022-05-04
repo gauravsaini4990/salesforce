@@ -59,8 +59,9 @@ jobs:
           ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCred.json -d -a devhub
           ../node_modules/sfdx-cli/bin/run force:org:list --json
           ../node_modules/sfdx-cli/bin/run force:org:create -f $def -d $alive -a $name
-          for el in $(niet -s .ScratchOrg.dependency <<< $project); do echo $el ; if["$?" != "1"] then ../node_modules/sfdx-cli/bin/run force:package:install -p ${el} -r -u $name -w $wait fi; done
-          ../node_modules/sfdx-cli/bin/run force:package:installed:list -u userReg
+          ../node_modules/sfdx-cli/bin/run force:org:list
+          for el in $(niet -s .ScratchOrg.dependency <<< $project); do ../node_modules/sfdx-cli/bin/run force:package:install -p ${el} -r -u $name -w $wait; done
+          ../node_modules/sfdx-cli/bin/run force:package:installed:list -u $name
           ../node_modules/sfdx-cli/bin/run force:source:push -u $name -f
           ../node_modules/sfdx-cli/bin/run force:apex:test:run -s $apexSuit -c -v -r
           ../node_modules/sfdx-cli/bin/run force:org:delete -u $name -p
