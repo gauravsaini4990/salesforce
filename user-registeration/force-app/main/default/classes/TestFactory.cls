@@ -24,7 +24,7 @@ public class TestFactory {
     public static Opportunity createOpportunity(Account acc, Contact con, Boolean doInsert) {
         //Create Opportunity
         Opportunity testOpportunity = new Opportunity(Name = 'Test test', AccountId = acc.Id, CloseDate = System.today(),
-                                                      StageName = 'Project Awarded', Amount = 500000,
+                                                      StageName = 'Project Awarded', Amount = 500000,ContactId=con.Id,
                                                       Type = 'Turnkey System');
         if(doInsert) insert testOpportunity;
         

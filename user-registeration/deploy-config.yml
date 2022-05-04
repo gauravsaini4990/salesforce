@@ -6,10 +6,10 @@ config:
         alive: 1
         wait: 30
         dependency:
-            - 04t3b000000gkdZAAQ
-            - 04t3o000001dBnsAAE
+            #- 04t3b000000gkdZAAQ
+            #- 04t3o000001dBnsAAE
         metadata: ''
-        apexSuit: 'test'
+        apexSuit: 'user_Registeration'
     Package:
         name: 'user-registeration'
         wait: 10
