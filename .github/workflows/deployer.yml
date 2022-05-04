@@ -12,7 +12,10 @@ on:
     types:
       - labeled
   issue_comment:
-    types: [created, edited]
+    types: 
+      - created
+      - edited
+      
 jobs:
   label:
     if: github.event.label.name == 'deploy'
