@@ -48,7 +48,7 @@ jobs:
       - name: Create package
         working-directory: ./user-registeration
         run: |
-          package=$(niet -f json .scratch_org deploy-config.yml)
+          package=$(niet -f json .package deploy-config.yml)
           echo '1'
           name=$(niet .name <<< $package)
           echo '2'
@@ -56,12 +56,10 @@ jobs:
           echo '3'
           wait=$(niet .wait <<< $package)
           echo '4'
-          apexSuit=$(niet .apex_suite <<< $scratchOrg)
+          description=$(niet .description <<< $package)
           echo '5'
-          metadata_path=$(niet .metadata <<< $scratchOrg)
-          echo '6'
           echo '${{ secrets.MY_DEVHUB }}' >> sfdcCred.json
-          echo '7'
+          echo '6'
           ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCred.json -d -a devhub
           packageList=$(../node_modules/sfdx-cli/bin/run force:package:list --json)
           for packageName in $(niet -s .result <<< $packageList); do if [ $(niet -s .Name <<< $packageName) == $name; then packageAlreadyExits=true; fi;  done
