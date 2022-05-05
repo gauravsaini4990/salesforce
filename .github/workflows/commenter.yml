@@ -49,21 +49,15 @@ jobs:
         working-directory: ./user-registeration
         run: |
           package=$(niet -f json .package deploy-config.yml)
-          echo '1'
           name=$(niet .name <<< $package)
-          echo '2'
           type=$(niet .type <<< $package)
-          echo '3'
           wait=$(niet .wait <<< $package)
-          echo '4'
           description=$(niet .description <<< $package)
-          echo '5'
           echo '${{ secrets.MY_DEVHUB }}' >> sfdcCred.json
-          echo '6'
           ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCred.json -d -a devhub
           packageList=$(../node_modules/sfdx-cli/bin/run force:package:list --json)
           for packageName in $(niet -s .result <<< $packageList); do if [ $(niet -s .Name <<< $packageName) == $name; then packageAlreadyExits=true; fi;  done
-          if [ $packageAlreadyExits ]; then ../node_modules/sfdx-cli/bin/run $ force:package:create -t $type -w $wait --orgdependent; fi
+          if [ !$packageAlreadyExits ]; then ../node_modules/sfdx-cli/bin/run $ force:package:create -t $type -w $wait --orgdependent; fi
           ../node_modules/sfdx-cli/bin/run force:package:version:create -x -c -w $wait
           ../node_modules/sfdx-cli/bin/run force:package:version:list -p $name
 
