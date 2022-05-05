@@ -12,15 +12,12 @@ on:
       
 jobs:
   comment:
-    #if: contains(github.event.comment.body, '!deploy')
+    if: contains(github.event.comment.body, '!deploy')
     runs-on: ubuntu-latest
     permissions:
       issues: write
       pull-requests: write
     steps:
-      - name: content
-        run: echo "${{ github.event.comment.body }}"
-        
       - name: Add comment to issue
         uses: peter-evans/create-or-update-comment@v2
         if: github.event_name == 'issues'
