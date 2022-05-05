@@ -18,6 +18,11 @@ jobs:
       issues: write
       pull-requests: write
     steps:
+      - name: show data
+        run:   echo "$GITHUB_CONTEXT"
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+    
       - name: Add comment to issue
         uses: peter-evans/create-or-update-comment@v2
         if: github.event_name == 'issues'
