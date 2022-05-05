@@ -1,0 +1,43 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: commenter
+on:
+  issue_comment:
+    types: 
+      - created
+      - edited
+      
+jobs:
+  comment:
+    if: contains(github.event.comment.body, '!deploy')
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Add comment to issue
+        uses: peter-evans/create-or-update-comment@v2
+        if: github.event_name == 'issues'
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            This issue is available for anyone to work on. **Make sure to reference this issue in your pull request.** :sparkles: Thank you for your contribution! :sparkles:
+
+      - name: Add comment to PR
+        uses: peter-evans/create-or-update-comment@v2
+        if: github.event_name == 'pull_request' && github.event.review.state == 'approved'
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            This issue is available for anyone to work on. **Make sure to reference this issue in your pull request.** :sparkles: Thank you for your contribution! :sparkles:
+            
+      - name: Non-Approved PR
+        uses: peter-evans/create-or-update-comment@v2
+        if: github.event_name == 'pull_request' && github.event.review.state != 'approved'
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            PR is not approved :sparkles: Thank you for your contribution! :sparkles:
