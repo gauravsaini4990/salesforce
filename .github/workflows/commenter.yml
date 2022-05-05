@@ -23,6 +23,9 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
     
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.sha }}
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout Pull Request
