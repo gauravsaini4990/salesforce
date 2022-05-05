@@ -23,25 +23,44 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
     
-      - name: Add comment to issue
-        uses: peter-evans/create-or-update-comment@v2
-        if: github.event_name == 'issues'
-        with:
-          issue-number: ${{ github.event.issue.number }}
-          body: |
-            This issue is available for anyone to work on. **Make sure to reference this issue in your pull request.** :sparkles: Thank you for your contribution! :sparkles:
 
-      - name: Add comment to PR
-        uses: peter-evans/create-or-update-comment@v2
-        if: github.event_name == 'pull_request' && github.event.review.state == 'approved'
-        with:
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            This issue is available for anyone to work on. **Make sure to reference this issue in your pull request.** :sparkles: Thank you for your contribution! :sparkles:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
             
-      - name: Non-Approved PR
-        uses: peter-evans/create-or-update-comment@v2
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.1.1
         with:
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            PR is not approved :sparkles: Thank you for your contribution! :sparkles:
+          node-version: '>=14'
+          check-latest: true
+
+      - name: Install Salesforce CLI
+        run: |
+          npm install sfdx-cli
+          node_modules/sfdx-cli/bin/run --version
+          node_modules/sfdx-cli/bin/run plugins --core
+
+      - name: install yaml parser
+        run: pip install -U niet       
+        
+      - name: Directory structure
+        working-directory: ./user-registeration
+        run: |
+          ls -ltr
+        
+      - name: Setup ScratchOrg
+        working-directory: ./user-registeration
+        run: |
+          packageAlreadyExits=''
+          package=$(niet -f json .scratch_org deploy-config.yml)
+          name=$(niet .name <<< $package)
+          type=$(niet .type <<< $package)
+          wait=$(niet .wait <<< $package)
+          apexSuit=$(niet .apex_suite <<< $scratchOrg)
+          metadata_path=$(niet .metadata <<< $scratchOrg)
+          echo '${{ secrets.MY_DEVHUB }}' >> sfdcCred.json
+          ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCred.json -d -a devhub
+          packageList=$(../node_modules/sfdx-cli/bin/run force:package:list --json)
+          for packageName in $(niet -s .result <<< $packageList); do if [ $(niet -s .Name <<< $packageName) == $name; then packageAlreadyExits=true; fi;  done
+          if [ $packageAlreadyExits ]; then ../node_modules/sfdx-cli/bin/run $ force:package:create -t $type -w $wait --orgdependent; fi
+          ../node_modules/sfdx-cli/bin/run force:package:version:create -x -c -w $wait
+          ../node_modules/sfdx-cli/bin/run force:package:version:list -p $name
