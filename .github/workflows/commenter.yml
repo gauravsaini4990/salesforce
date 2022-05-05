@@ -61,14 +61,14 @@ jobs:
           for packageName in $(niet -s .result <<< $packageList); do if [ $(niet -s .Name <<< $packageName) == $name]; then packageAlreadyExits=true; fi;  done
           if [ "$packageAlreadyExits" = false ]; then ../node_modules/sfdx-cli/bin/run  force:package:create -n $name -d "$description" -r $path -t $type --orgdependent; fi
           ../node_modules/sfdx-cli/bin/run force:package:list
-          ../node_modules/sfdx-cli/bin/run force:package:version:create -p $name -x -c -w $wait
+          ../node_modules/sfdx-cli/bin/run force:package:version:create -p $name -x -c -w $wait --json
           ../node_modules/sfdx-cli/bin/run force:package:version:list -p $name
 
 
       - name: install package
         working-directory: ./user-registeration
         run: |
-          package=$(niet -f json .scratch_org deploy-config.yml)
+          package=$(niet -f json .package deploy-config.yml)
           name=$(niet .name <<< $package)
           type=$(niet .type <<< $package)
           wait=$(niet .wait <<< $package)
