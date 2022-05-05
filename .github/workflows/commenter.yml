@@ -24,12 +24,6 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
     
       - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.sha }}
-
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout Pull Request
-        run: hub pr checkout ${{ github.event.issue.number }}
             
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.1.1
