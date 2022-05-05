@@ -8,16 +8,38 @@ on:
   issues:
     types:
       - labeled
+  pull_request:
+    types:
+      - labeled
+      
 jobs:
-  add-comment:
+  label:
     if: github.event.label.name == 'deploy'
     runs-on: ubuntu-latest
     permissions:
       issues: write
+      pull-requests: write
     steps:
-      - name: Add comment
+      - name: Add comment to issue
         uses: peter-evans/create-or-update-comment@v2
+        if: github.event_name == 'issues'
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
             This issue is available for anyone to work on. **Make sure to reference this issue in your pull request.** :sparkles: Thank you for your contribution! :sparkles:
+
+      - name: Add comment to PR
+        uses: peter-evans/create-or-update-comment@v2
+        if: github.event_name == 'pull_request' && github.event.review.state == 'approved'
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            This issue is available for anyone to work on. **Make sure to reference this issue in your pull request.** :sparkles: Thank you for your contribution! :sparkles:
+
+      - name: Non-Approved PR
+        uses: peter-evans/create-or-update-comment@v2
+        if: github.event_name == 'pull_request' && github.event.review.state != 'approved'
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            PR is not approved :sparkles: Thank you for your contribution! :sparkles:
