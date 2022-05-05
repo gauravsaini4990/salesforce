@@ -59,7 +59,7 @@ jobs:
           ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCred.json -d -a devhub
           packageList=$(../node_modules/sfdx-cli/bin/run force:package:list --json)
           ../node_modules/sfdx-cli/bin/run force:package:list --json
-          for packageName in $(niet -s .result <<< $packageList); do if [ "$packageName" == $name ]; echo $packageName;  done
+          for packageName in $(niet -s .result <<< $packageList); do if [ "$packageName" == $name ];then echo $packageName; fi;  done
           if [ "$packageAlreadyExits" = false ]; then ../node_modules/sfdx-cli/bin/run  force:package:create -n $name -d "$description" -r $path -t $type --orgdependent; fi
           ../node_modules/sfdx-cli/bin/run force:package:list
           packageResult=$(../node_modules/sfdx-cli/bin/run force:package:version:create -p $name -x -c -w $wait --json)
