@@ -45,10 +45,34 @@ jobs:
         run: |
           ls -ltr
         
-      - name: Setup ScratchOrg
+      - name: Create package
         working-directory: ./user-registeration
         run: |
-          packageAlreadyExits=''
+          package=$(niet -f json .scratch_org deploy-config.yml)
+          echo '1'
+          name=$(niet .name <<< $package)
+          echo '2'
+          type=$(niet .type <<< $package)
+          echo '3'
+          wait=$(niet .wait <<< $package)
+          echo '4'
+          apexSuit=$(niet .apex_suite <<< $scratchOrg)
+          echo '5'
+          metadata_path=$(niet .metadata <<< $scratchOrg)
+          echo '6'
+          echo '${{ secrets.MY_DEVHUB }}' >> sfdcCred.json
+          echo '7'
+          ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCred.json -d -a devhub
+          packageList=$(../node_modules/sfdx-cli/bin/run force:package:list --json)
+          for packageName in $(niet -s .result <<< $packageList); do if [ $(niet -s .Name <<< $packageName) == $name; then packageAlreadyExits=true; fi;  done
+          if [ $packageAlreadyExits ]; then ../node_modules/sfdx-cli/bin/run $ force:package:create -t $type -w $wait --orgdependent; fi
+          ../node_modules/sfdx-cli/bin/run force:package:version:create -x -c -w $wait
+          ../node_modules/sfdx-cli/bin/run force:package:version:list -p $name
+
+
+      - name: install package
+        working-directory: ./user-registeration
+        run: |
           package=$(niet -f json .scratch_org deploy-config.yml)
           name=$(niet .name <<< $package)
           type=$(niet .type <<< $package)
@@ -57,8 +81,4 @@ jobs:
           metadata_path=$(niet .metadata <<< $scratchOrg)
           echo '${{ secrets.MY_DEVHUB }}' >> sfdcCred.json
           ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCred.json -d -a devhub
-          packageList=$(../node_modules/sfdx-cli/bin/run force:package:list --json)
-          for packageName in $(niet -s .result <<< $packageList); do if [ $(niet -s .Name <<< $packageName) == $name; then packageAlreadyExits=true; fi;  done
-          if [ $packageAlreadyExits ]; then ../node_modules/sfdx-cli/bin/run $ force:package:create -t $type -w $wait --orgdependent; fi
-          ../node_modules/sfdx-cli/bin/run force:package:version:create -x -c -w $wait
           ../node_modules/sfdx-cli/bin/run force:package:version:list -p $name
