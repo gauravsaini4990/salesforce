@@ -1,6 +1,6 @@
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
+# separate terms of serviceb, privacy policy, and support
 # documentation.
 
 name: commenter
@@ -12,7 +12,7 @@ on:
       
 jobs:
   comment:
-    if: contains(github.event.comment.body, '!deploy')
+    #if: contains(github.event.comment.body, '!deploy')
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -33,7 +33,9 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
             This issue is available for anyone to work on. **Make sure to reference this issue in your pull request.** :sparkles: Thank you for your contribution! :sparkles:
-            
+      - name: get comment
+        run: echo "${{ github.event.comment }}"
+        
       - name: Non-Approved PR
         uses: peter-evans/create-or-update-comment@v2
         if: github.event_name == 'pull_request' && github.event.review.state != 'approved'
