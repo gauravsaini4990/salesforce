@@ -19,7 +19,7 @@ jobs:
       pull-requests: write
     steps:
       - name: content
-        run: echo "{{github.event.comment}}"
+        run: echo "${{ github.event.comment }}"
         
       - name: Add comment to issue
         uses: peter-evans/create-or-update-comment@v2
