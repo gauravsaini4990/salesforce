@@ -25,7 +25,7 @@ jobs:
     
       - name: Add comment to issue
         uses: peter-evans/create-or-update-comment@v2
-        if: github.event_name == 'issues'
+        if: github.event.issue == 'issues'
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
@@ -42,6 +42,6 @@ jobs:
       - name: Non-Approved PR
         uses: peter-evans/create-or-update-comment@v2
         with:
-          issue-number: ${{ github.event.pull_request.number }}
+          issue-number: ${{ github.event.issue.number }}
           body: |
             PR is not approved :sparkles: Thank you for your contribution! :sparkles:
