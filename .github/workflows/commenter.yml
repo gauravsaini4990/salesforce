@@ -45,6 +45,12 @@ jobs:
         run: |
           ls -ltr
         
+      - name: Authorize devhub
+        working-directory: ./user-registeration
+        run: |
+          echo '${{ secrets.MY_DEVHUB }}' >> sfdcCred.json
+          ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCred.json -d -a devhub
+        
       - name: Create package
         working-directory: ./user-registeration
         run: |
@@ -55,8 +61,6 @@ jobs:
           wait=$(niet .wait <<< $package)
           description=$(niet .description <<< $package)
           path=$(niet .path <<< $package)
-          echo '${{ secrets.MY_DEVHUB }}' >> sfdcCred.json
-          ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCred.json -d -a devhub
           packageList=$(../node_modules/sfdx-cli/bin/run force:package:list --json)
           ../node_modules/sfdx-cli/bin/run force:package:list --json
           for packageName in $(niet -s .result <<< $packageList); do if [[ "$packageName" = *"$name"* ]];then echo $packageName ; packageAlreadyExits=true; fi;  done
@@ -74,9 +78,5 @@ jobs:
         run: |
           package=$(niet -f json .package deploy-config.yml)
           name=$(niet .name <<< $package)
-          type=$(niet .type <<< $package)
           wait=$(niet .wait <<< $package)
-          echo '${{ secrets.MY_DEVHUB }}' >> sfdcCred.json
-          ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCred.json -d -a devhub
-          ../node_modules/sfdx-cli/bin/run force:package:version:list -p $name
           ../node_modules/sfdx-cli/bin/run force:package:install -p $SubscriberPackageVersionId -w $wait
