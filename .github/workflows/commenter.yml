@@ -25,7 +25,8 @@ jobs:
     
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - name: Checkout Pull Request
+        run: hub pr checkout ${{ github.event.issue.number }}
             
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.1.1
