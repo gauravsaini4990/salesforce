@@ -16,3 +16,4 @@ package:
     wait: 10
     type: 'Unlocked'
     description: 'This is first package'
+    path: 'force-app'
