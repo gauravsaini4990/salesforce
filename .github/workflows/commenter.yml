@@ -44,15 +44,15 @@ jobs:
         run: |
           commands=(${{github.event.comment.body}})
           IFS=":"
-          for val in "${commands[@]}";do if [[ "$val" == *"package"* ]]; then command=(${val}); echo "directory=${command[1]}" >> $GITHUB_ENV; elif [[ "$val" == *"env"* ]];then command=(${val}); echo "path=${command[1]}" >> $GITHUB_ENV; elif [[ "$val" == *"version"* ]];then command=(${val}); echo "packageId=${command[1]}" >> $GITHUB_ENV;fi done
+          for val in "${commands[@]}";do if [[ "$val" == *"package"* ]]; then command=(${val}); echo "directory=${command[1]}" >> $GITHUB_ENV; elif [[ "$val" == *"env"* ]];then command=(${val}); echo "env=${command[1]}" >> $GITHUB_ENV; elif [[ "$val" == *"version"* ]];then command=(${val}); echo "packageId=${command[1]}" >> $GITHUB_ENV;fi done
           
       - name: Directory structure
-        working-directory: $directory
+        working-directory: env.directory
         run: |
           ls -ltr
         
       - name: Authorize devhub
-        working-directory: $directory
+        working-directory: env.directory
         run: |
           echo '${{ secrets.MY_DEVHUB }}' >> sfdcCred.json
           ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCred.json -d -s -a devhub
@@ -61,7 +61,7 @@ jobs:
         
       - name: Create package
         if: contains(github.event.comment.body,'package') && !contains(github.event.comment.body,'deployVersion')
-        working-directory: $directory
+        working-directory: env.directory
         run: |
           packageAlreadyExits=false
           package=$(niet -f json .package deploy-config.yml)
@@ -84,7 +84,7 @@ jobs:
 
       - name: install package
         if: contains(github.event.comment.body,'package') && contains(github.event.comment.body,'deployVersion')
-        working-directory: $directory
+        working-directory: env.directory
         run: |
           package=$(niet -f json .package deploy-config.yml)
           name=$(niet .name <<< $package)
