@@ -40,19 +40,25 @@ jobs:
       - name: install yaml parser
         run: pip install -U niet       
         
+      - name: Setting variables
+        run: |
+          commands=(${{github.event.comment.body}})
+          IFS=":"
+          for val in "${commands[@]}";do if [[ "$val" == *"package"* ]]; then command=(${val}); echo "directory=${command[1]}" >> $GITHUB_ENV; elif [[ "$val" == *"env"* ]];then command=(${val}); echo "path=${command[1]}" >> $GITHUB_ENV; elif [[ "$val" == *"version"* ]];then command=(${val}); echo "packageId=${command[1]}" >> $GITHUB_ENV;fi done
+          
       - name: Directory structure
-        working-directory: ./user-registeration
+        working-directory: $directory
         run: |
           ls -ltr
         
       - name: Authorize devhub
-        working-directory: ./user-registeration
+        working-directory: $directory
         run: |
           echo '${{ secrets.MY_DEVHUB }}' >> sfdcCred.json
           ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCred.json -d -s -a devhub
         
       - name: Create package
-        working-directory: ./user-registeration
+        working-directory: $directory
         run: |
           packageAlreadyExits=false
           package=$(niet -f json .package deploy-config.yml)
@@ -74,7 +80,7 @@ jobs:
 
 
       - name: install package
-        working-directory: ./user-registeration
+        working-directory: $directory
         run: |
           package=$(niet -f json .package deploy-config.yml)
           name=$(niet .name <<< $package)
