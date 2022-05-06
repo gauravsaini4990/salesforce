@@ -1,5 +1,5 @@
 @isTest
-public with sharing class DemoTest {
+public with sharing class DemoTest2 {
     @TestSetup
     static void makeData(){
         Account testAccount = TestFactory.createAccount(true);
