@@ -83,7 +83,7 @@ jobs:
 
 
       - name: install package
-        if: contains(github.event.comment.body,'package') && contains(github.event.comment.body,'deployVersion')
+        if: contains(github.event.comment.body,'package')
         working-directory: ${{env.base_directory}}
         run: |
           package=$(niet -f json .package deploy-config.yml)
