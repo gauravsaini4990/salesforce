@@ -12,7 +12,7 @@ on:
       
 jobs:
   comment:
-    if: contains(github.event.comment.body, '!deploy')
+    if: startsWith(github.event.comment.body, '!deploy')
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -56,8 +56,11 @@ jobs:
         run: |
           echo '${{ secrets.MY_DEVHUB }}' >> sfdcCred.json
           ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCred.json -d -s -a devhub
+          if [[ "$env" = "dev" ]];then echo '${{ secrets.MY_SO }}' >> sfdcCredSO.json; ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCredSO.json -s; fi
+          
         
       - name: Create package
+        if: contains(github.event.comment.body,'package') && !contains(github.event.comment.body,'deployVersion')
         working-directory: $directory
         run: |
           packageAlreadyExits=false
@@ -75,14 +78,15 @@ jobs:
           packageResult=$(../node_modules/sfdx-cli/bin/run force:package:version:create -p $name -x -c -w $wait --json)
           SubscriberPackageVersionId=$(niet .result.SubscriberPackageVersionId <<< $packageResult)
           echo $SubscriberPackageVersionId
-          echo "SubscriberPackageVersionId=$SubscriberPackageVersionId" >> $GITHUB_ENV
+          echo "packageId=$SubscriberPackageVersionId" >> $GITHUB_ENV
           ../node_modules/sfdx-cli/bin/run force:package:version:list -p $name
 
 
       - name: install package
+        if: contains(github.event.comment.body,'package') && contains(github.event.comment.body,'deployVersion')
         working-directory: $directory
         run: |
           package=$(niet -f json .package deploy-config.yml)
           name=$(niet .name <<< $package)
           wait=$(niet .wait <<< $package)
-          ../node_modules/sfdx-cli/bin/run force:package:install -p $SubscriberPackageVersionId -w $wait
+          ../node_modules/sfdx-cli/bin/run force:package:install -p $packageId -w $wait
