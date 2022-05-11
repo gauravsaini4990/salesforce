@@ -16,9 +16,7 @@ jobs:
   label:
     if: github.event.label.name == 'deploy'
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
-      pull-requests: write
+    permissions: write-all
     steps:
       - name: Add comment to issue
         uses: peter-evans/create-or-update-comment@v2
