@@ -43,3 +43,13 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
             PR is not approved :sparkles: Thank you for your contribution! :sparkles:
+      
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: prettier
+        run: npx prettier --write "./**/*.{js,html}"
+      
+      - uses: EndBug/add-and-commit@v7
+        with:
+          default_author: github_actions
