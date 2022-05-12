@@ -57,8 +57,9 @@ jobs:
           ../node_modules/sfdx-cli/bin/run force:source:push -f
           if [ $metadata_path ]; then ../node_modules/sfdx-cli/bin/run force:mdapi:deploy -d $metadata_path -w $wait; fi
           if [ $apexSuit ]; then ../node_modules/sfdx-cli/bin/run force:apex:test:run -s $apexSuit -c -v -r human; fi
-          ../node_modules/sfdx-cli/bin/run force:user:create -u $alias email=gsaini@borregosolar.com profileName='System Administrator' generatepassword=true
-      
+          usernameJson=$(../node_modules/sfdx-cli/bin/run force:user:create -u $alias email=gsaini@borregosolar.com profileName='System Administrator' generatepassword=true)
+          username=$(niet .result.fields.username <<< $usernameJson)
+          ../node_modules/sfdx-cli/bin/run force:user:display -u $username
        
       - name: retrieve Source
         if: github.event.label.name == 'retrieve'    
