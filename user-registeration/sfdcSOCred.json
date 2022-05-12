@@ -1,0 +1,22 @@
+{
+  "status": 0,
+  "result": {
+    "id": "00D63000000fgwxEAA",
+    "devHubId": "gsaini@borregosolar.com.prod",
+    "accessToken": "00D63000000fgwx!AQEAQB5jPjnIu_QQRSPg_efKkSG1JO00Xh1XFS6lyk4mVmT5l0YhhuEhPm8we_jCL_4w4TR0_LbDyXDUqXndnbYO8bFYgQRg",
+    "instanceUrl": "https://drive-speed-5334-dev-ed.cs43.my.salesforce.com",
+    "username": "test-7bgwwnxdvpsa@example.com",
+    "clientId": "PlatformCLI",
+    "status": "Active",
+    "expirationDate": "2022-05-13",
+    "createdBy": "gsaini@borregosolar.com.prod",
+    "edition": "Developer",
+    "orgName": "Demo company",
+    "createdDate": "2022-05-12T11:20:52.000+0000",
+    "sfdxAuthUrl": "force://PlatformCLI::5Aep861.DwG6akZdKIakoGgsJMpGoUncMlouRqQxPckzW4W2tplpyO49jnTAs.0kmMkh2.RaF.tjgxbEalRMCdH@drive-speed-5334-dev-ed.cs43.my.salesforce.com",
+    "alias": "user-registeration-scratchOrg"
+  },
+  "warnings": [
+    "This command will expose sensitive information that allows for subsequent activity using your current authenticated session.\nSharing this information is equivalent to logging someone in under the current credential, resulting in unintended access and escalation of privilege.\nFor additional information, please review the authorization section of the https://developer.salesforce.com/docs/atlas.en-us.234.0.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_web_flow.htm"
+  ]
+}
