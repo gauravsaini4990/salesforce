@@ -72,7 +72,7 @@ jobs:
           wait=$(niet .wait <<< $scratchOrg)
           apexSuit=$(niet .apex_suite <<< $scratchOrg)
           metadata_path=$(niet .metadata <<< $scratchOrg)
-          ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcSOCred.json -d -a $alias
+          ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcSOCred.json -s
           ../node_modules/sfdx-cli/bin/run force:org:list --json
           ../node_modules/sfdx-cli/bin/run force:source:pull -f
       
