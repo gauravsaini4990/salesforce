@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "sfdx-cli": "^7.149.1"
+  }
+}

@@ -1,2 +1,5 @@
 
 user-registeration/.sfdx/*
+user-registeration/sfdcCred.json
+**/profiles/
+node_modules

@@ -14,32 +14,69 @@ on:
       
 jobs:
   label:
-    if: github.event.label.name == 'deploy'
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
-      pull-requests: write
+    permissions: write-all
     steps:
-      - name: Add comment to issue
-        uses: peter-evans/create-or-update-comment@v2
-        if: github.event_name == 'issues'
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.1.1
         with:
-          issue-number: ${{ github.event.issue.number }}
-          body: |
-            This issue is available for anyone to work on. **Make sure to reference this issue in your pull request.** :sparkles: Thank you for your contribution! :sparkles:
+          node-version: '>=14'
+          check-latest: true
 
-      - name: Add comment to PR
-        uses: peter-evans/create-or-update-comment@v2
-        if: github.event_name == 'pull_request' && github.event.review.state == 'approved'
+      - name: Install Salesforce CLI
+        run: |
+          npm install sfdx-cli
+          node_modules/sfdx-cli/bin/run --version
+          node_modules/sfdx-cli/bin/run plugins --core
+          
+      - name: install yaml parser
+        run: pip install -U niet       
+        
+      - name: Setup ScratchOrg
+        if: github.event.label.name == 'deploy'    
+        working-directory: ./user-registeration
+        run: |
+          scratchOrg=$(niet -f json .scratch_org deploy-config.yml)
+          def=$(niet .definition_file <<< $scratchOrg)
+          alias=$(niet .alias <<< $scratchOrg)
+          alive=$(niet .alive <<< $scratchOrg)
+          wait=$(niet .wait <<< $scratchOrg)
+          apexSuit=$(niet .apex_suite <<< $scratchOrg)
+          metadata_path=$(niet .metadata <<< $scratchOrg)
+          echo '${{ secrets.MY_DEVHUB }}' > sfdcCred.json
+          ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCred.json -d -a devhub
+          ../node_modules/sfdx-cli/bin/run force:org:list --json
+          ../node_modules/sfdx-cli/bin/run force:org:create -f $def -d $alive -a $alias -w $wait -s
+          ../node_modules/sfdx-cli/bin/run force:org:list
+          ../node_modules/sfdx-cli/bin/run force:org:display -u $alias --verbose --json > sfdcSOCred.json
+          for el in $(niet -s .dependencies <<< $scratchOrg); do ../node_modules/sfdx-cli/bin/run force:package:install -p ${el} -r -w $wait; done
+          ../node_modules/sfdx-cli/bin/run force:package:installed:list
+          ../node_modules/sfdx-cli/bin/run force:source:push -f
+          if [ $metadata_path ]; then ../node_modules/sfdx-cli/bin/run force:mdapi:deploy -d $metadata_path -w $wait; fi
+          if [ $apexSuit ]; then ../node_modules/sfdx-cli/bin/run force:apex:test:run -s $apexSuit -c -v -r human; fi
+          usernameJson=$(../node_modules/sfdx-cli/bin/run force:user:create -u $alias email=gsaini@borregosolar.com profileName='System Administrator' generatepassword=true --json)
+          username=$(niet .result.fields.username <<< $usernameJson)
+          ../node_modules/sfdx-cli/bin/run force:user:display -u $username
+       
+      - name: retrieve Source
+        if: github.event.label.name == 'retrieve'    
+        working-directory: ./user-registeration
+        run: |
+          scratchOrg=$(niet -f json .scratch_org deploy-config.yml)
+          def=$(niet .definition_file <<< $scratchOrg)
+          alias=$(niet .alias <<< $scratchOrg)
+          alive=$(niet .alive <<< $scratchOrg)
+          wait=$(niet .wait <<< $scratchOrg)
+          apexSuit=$(niet .apex_suite <<< $scratchOrg)
+          metadata_path=$(niet .metadata <<< $scratchOrg)
+          ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcSOCred.json -s
+          ../node_modules/sfdx-cli/bin/run force:org:list --json
+          ../node_modules/sfdx-cli/bin/run force:source:pull -f
+      
+      - uses: EndBug/add-and-commit@v7
         with:
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            This issue is available for anyone to work on. **Make sure to reference this issue in your pull request.** :sparkles: Thank you for your contribution! :sparkles:
-
-      - name: Non-Approved PR
-        uses: peter-evans/create-or-update-comment@v2
-        if: github.event_name == 'pull_request' && github.event.review.state != 'approved'
-        with:
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            PR is not approved :sparkles: Thank you for your contribution! :sparkles:
+          default_author: user_info
+          message: 'retrieve source from branch org'
