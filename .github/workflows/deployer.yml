@@ -46,18 +46,18 @@ jobs:
           wait=$(niet .wait <<< $scratchOrg)
           apexSuit=$(niet .apex_suite <<< $scratchOrg)
           metadata_path=$(niet .metadata <<< $scratchOrg)
-          echo '${{ secrets.MY_DEVHUB }}' >> sfdcCred.json
+          echo '${{ secrets.MY_DEVHUB }}' > sfdcCred.json
           ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCred.json -d -a devhub
           ../node_modules/sfdx-cli/bin/run force:org:list --json
           ../node_modules/sfdx-cli/bin/run force:org:create -f $def -d $alive -a $alias -w $wait -s
           ../node_modules/sfdx-cli/bin/run force:org:list
-          ../node_modules/sfdx-cli/bin/run force:org:display -u $alias --verbose --json >> sfdcSOCred.json
+          ../node_modules/sfdx-cli/bin/run force:org:display -u $alias --verbose --json > sfdcSOCred.json
           for el in $(niet -s .dependencies <<< $scratchOrg); do ../node_modules/sfdx-cli/bin/run force:package:install -p ${el} -r -w $wait; done
           ../node_modules/sfdx-cli/bin/run force:package:installed:list
           ../node_modules/sfdx-cli/bin/run force:source:push -f
           if [ $metadata_path ]; then ../node_modules/sfdx-cli/bin/run force:mdapi:deploy -d $metadata_path -w $wait; fi
           if [ $apexSuit ]; then ../node_modules/sfdx-cli/bin/run force:apex:test:run -s $apexSuit -c -v -r human; fi
-          usernameJson=$(../node_modules/sfdx-cli/bin/run force:user:create -u $alias email=gsaini@borregosolar.com profileName='System Administrator' generatepassword=true)
+          usernameJson=$(../node_modules/sfdx-cli/bin/run force:user:create -u $alias email=gsaini@borregosolar.com profileName='System Administrator' generatepassword=true --json)
           username=$(niet .result.fields.username <<< $usernameJson)
           ../node_modules/sfdx-cli/bin/run force:user:display -u $username
        
