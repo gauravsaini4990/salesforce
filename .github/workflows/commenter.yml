@@ -24,6 +24,8 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
     
       - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PAT }}
         
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.1.1
