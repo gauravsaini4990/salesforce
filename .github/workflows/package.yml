@@ -44,25 +44,25 @@ jobs:
           command=${{github.event.label.name}}
           IFS=":"
           commands=($command)
-          echo "base_directory=${commands[1]}" >> $GITHUB_ENV
+          echo "BASE_DIRECTORY=${commands[1]}" >> $GITHUB_ENV
           
       - name: Directory structure
-        working-directory: ${{env.base_directory}}
+        working-directory: ${{env.BASE_DIRECTORY}}
         run: |
           ls -ltr
         
       - name: Authorize devhub
-        working-directory: ${{ env.base_directory }}
+        working-directory: ${{ env.BASE_DIRECTORY }}
         run: |
           echo '${{ secrets.MY_DEVHUB }}' > sfdcCred.json
           ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCred.json -d -a devhub
-          echo '${{ secrets.DEV_RESTRUCTUR }}' > sfdcCredDev.json
+          echo '${{ secrets.DEV_ORG }}' > sfdcCredDev.json
           ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCredDev.json -s
           
         
       - name: Create package
         id: create_package
-        working-directory: ${{ env.base_directory }}
+        working-directory: ${{ env.BASE_DIRECTORY }}
         run: |
           ../node_modules/sfdx-cli/bin/run force:package:list -v devhub
           packageAlreadyExits=false
@@ -86,7 +86,7 @@ jobs:
           
       - name: cleanup
         if: always()
-        working-directory: ${{ env.base_directory }}
+        working-directory: ${{ env.BASE_DIRECTORY }}
         run: |
           rm -rf sfdcCred*
           echo ${{ steps.create_package.outcome }}
@@ -98,7 +98,7 @@ jobs:
           message: 'package created'
           
       - name: install package
-        working-directory: ${{ env.base_directory }}
+        working-directory: ${{ env.BASE_DIRECTORY }}
         run: |
           package=$(niet -f json .package deploy-config.yml)
           wait=$(niet .wait <<< $package)
