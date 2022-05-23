@@ -1,0 +1,106 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: packaging
+on:
+  issues:
+    types:
+      - labeled
+  pull_request:
+    types:
+      - labeled
+      
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    if: startsWith(github.event.label.name, 'package:')
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PAT }}
+        
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.1.1
+        with:
+          node-version: '>=14'
+          check-latest: true
+
+      - name: Install Salesforce CLI
+        run: |
+          npm install sfdx-cli
+          node_modules/sfdx-cli/bin/run --version
+          node_modules/sfdx-cli/bin/run plugins --core
+          
+      - name: install yaml parser
+        run: pip install -U niet       
+        
+      - name: Setting variables
+        run: |
+          command=${{github.event.label.name}}
+          IFS=":"
+          commands=($command)
+          echo "base_directory=${commands[1]}" >> $GITHUB_ENV
+          
+      - name: Directory structure
+        working-directory: ${{env.base_directory}}
+        run: |
+          ls -ltr
+        
+      - name: Authorize devhub
+        working-directory: ${{ env.base_directory }}
+        run: |
+          echo '${{ secrets.MY_DEVHUB }}' > sfdcCred.json
+          ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCred.json -d -a devhub
+          echo '${{ secrets.DEV_RESTRUCTUR }}' > sfdcCredDev.json
+          ../node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./sfdcCredDev.json -s
+          
+        
+      - name: Create package
+        id: create_package
+        working-directory: ${{ env.base_directory }}
+        run: |
+          ../node_modules/sfdx-cli/bin/run force:package:list -v devhub
+          packageAlreadyExits=false
+          package=$(niet -f json .package deploy-config.yml)
+          name=$(niet .name <<< $package)
+          type=$(niet .type <<< $package)
+          wait=$(niet .wait <<< $package)
+          description=$(niet .description <<< $package)
+          path=$(niet .path <<< $package)
+          packageList=$(../node_modules/sfdx-cli/bin/run force:package:list -v devhub --json)
+          for packageName in $(niet -s .result <<< $packageList); do if [[ "$packageName" = *"$name"* ]];then echo $packageName ; packageAlreadyExits=true; fi;  done
+          if [ "$packageAlreadyExits" = false ]; then ../node_modules/sfdx-cli/bin/run  force:package:create -v devhub -n $name -d "$description" -r $path -t $type --orgdependent; fi
+          ../node_modules/sfdx-cli/bin/run force:package:list -v devhub
+          packageResult=$(../node_modules/sfdx-cli/bin/run force:package:version:create -v devhub -p $name -x -c -w $wait --json)
+          SubscriberPackageVersionId=$(niet .result.SubscriberPackageVersionId <<< $packageResult)
+          echo $SubscriberPackageVersionId
+          echo "packageId=$SubscriberPackageVersionId" >> $GITHUB_ENV
+          ../node_modules/sfdx-cli/bin/run force:package:version:list -v devhub -p $name
+          sleep 2m
+
+          
+      - name: cleanup
+        if: always()
+        working-directory: ${{ env.base_directory }}
+        run: |
+          rm -rf sfdcCred*
+          echo ${{ steps.create_package.outcome }}
+          
+      - uses: EndBug/add-and-commit@v7
+        if: steps.create_package.outcome == 'success'
+        with:
+          default_author: github_actions
+          message: 'package created'
+          
+      - name: install package
+        working-directory: ${{ env.base_directory }}
+        run: |
+          package=$(niet -f json .package deploy-config.yml)
+          wait=$(niet .wait <<< $package)
+          ../node_modules/sfdx-cli/bin/run force:package:install -p $packageId -a package -r -w $wait
+          
