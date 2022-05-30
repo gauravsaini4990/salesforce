@@ -7,8 +7,8 @@ scratch_org:
     alive: 1
     wait: 30
     dependencies:
-        #- 04t3b000000gkdZAAQ
-        #- 04t3o000001dBnsAAE
+        #- 04t4W000002GpLoQAK #OmniStudio
+        #- 04t4W000002kaNAQAY #HealthCloud
     metadata: 'metadata/unpackaged'
     apex_suite: 'user_Registeration'
 package:
