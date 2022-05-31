@@ -1,7 +1,7 @@
 {
   "orgName": "Health System",
   "sourceOrg": "00D5j00000AdSO0EAN",
-  "features": ["EnableSetPasswordInApi","RecordTypes"],
+  "features": ["EnableSetPasswordInApi","RecordTypes","ContactsToMultipleAccounts"],
   "settings": {
     "lightningExperienceSettings": {
       "enableS1DesktopEnabled": true
