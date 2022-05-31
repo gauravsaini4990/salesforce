@@ -1,6 +1,6 @@
 {
-  "orgName": "Demo company",
-  "edition": "Developer",
+  "orgName": "Health System",
+  "sourceOrg": "00D5j00000AdSO0EAN",
   "features": ["EnableSetPasswordInApi","RecordTypes"],
   "settings": {
     "lightningExperienceSettings": {
