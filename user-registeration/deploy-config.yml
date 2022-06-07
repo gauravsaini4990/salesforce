@@ -9,6 +9,12 @@ scratch_org:
     dependencies:
         - 04t4W000002GpLoQAK #OmniStudio
         #- 04t4W000002kaNAQAY #HealthCloud
+        - 04t1E000001AY4lQAG #Contacts & Organizations
+        - 04t1E000000gbLrQAI #Households
+        - 04t1E00000126xrQAA #Recurring Donations
+        - 04t2E000003sm94QAA #Relationships
+        - 04t2E000003Dl6wQAC #Affiliations
+        - 04t5d000001YvaEAAS #Nonprofit Success Pack
     metadata: 'metadata/unpackaged'
     apex_suite: 'user_Registeration'
 package:
