@@ -14,6 +14,7 @@ scratch_org:
         - 04t1E00000126xrQAA #Recurring Donations
         - 04t2E000003sm94QAA #Relationships
         - 04t2E000003Dl6wQAC #Affiliations
+        - 04t5j000000gyfTAAQ #Nonprofit dependency
         - 04t5d000001YvaEAAS #Nonprofit Success Pack
     metadata: 'metadata/unpackaged'
     apex_suite: 'user_Registeration'
