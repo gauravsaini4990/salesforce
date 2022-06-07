@@ -66,6 +66,12 @@ jobs:
           ../node_modules/sfdx-cli/bin/run force:source:push -f
           if [ $metadata_path ]; then ../node_modules/sfdx-cli/bin/run force:mdapi:deploy -d $metadata_path -w $wait; fi
           if [ $apexSuit ]; then ../node_modules/sfdx-cli/bin/run force:apex:test:run -s $apexSuit -c -v -r human; fi
+          
+          
+      - name: cleanup
+        if: always()
+        working-directory: ./user-registeration
+        run: |
           ../node_modules/sfdx-cli/bin/run force:org:delete -p
 
   pmd:
