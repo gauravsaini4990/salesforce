@@ -4,7 +4,7 @@ app:
 scratch_org:
     alias: 'user-registeration-scratchOrg'
     definition_file: 'config/project-scratch-def.json'
-    alive: 1
+    alive: 15
     wait: 30
     dependencies:
         - 04t4W000002GpLoQAK #OmniStudio
