@@ -1,0 +1,21 @@
+{
+  "status": 0,
+  "result": {
+    "id": "00D0p0000001Z99EAE",
+    "devHubId": "gauravsaini4990@gmail.com.omni",
+    "accessToken": "00D0p0000001Z99!AR8AQLiGIrfPFUwpp_RFRsBbJHQHHYvDHDFSDLc0wq6Nw2xaLVaxmSUSxObaRvDZaMKXeiBGiG_0hvBXXnggKski6pkjMSnE",
+    "instanceUrl": "https://sobject-pluto-1219-dev-ed.my.salesforce.com",
+    "username": "test-yamtjxevmx3j@example.com",
+    "clientId": "PlatformCLI",
+    "status": "Active",
+    "expirationDate": "2022-07-12",
+    "createdBy": "gauravsaini4990@gmail.com.omni",
+    "orgName": "Health System",
+    "createdDate": "2022-06-27T16:11:32.000+0000",
+    "sfdxAuthUrl": "force://PlatformCLI::5Aep861fKAwJJ.Fedh6JenpVbvwbCYHDfiGCmMXorjH2fTIL2m56cny.O1dDm3EevNn.G4_r3I_9dDkQPW1SiRo@sobject-pluto-1219-dev-ed.my.salesforce.com",
+    "alias": "user-registeration-scratchOrg"
+  },
+  "warnings": [
+    "This command will expose sensitive information that allows for subsequent activity using your current authenticated session.\nSharing this information is equivalent to logging someone in under the current credential, resulting in unintended access and escalation of privilege.\nFor additional information, please review the authorization section of the https://developer.salesforce.com/docs/atlas.en-us.234.0.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_web_flow.htm"
+  ]
+}
