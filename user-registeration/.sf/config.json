@@ -1,3 +1,4 @@
 {
-  "target-org": "test-uanxdnq5rdnj@example.com"
+  "target-dev-hub": "devhub",
+  "target-org": "user-registeration-scratchOrg"
 }
