@@ -4,10 +4,10 @@ app:
 scratch_org:
     alias: 'user-registeration-scratchOrg'
     definition_file: 'config/project-scratch-def.json'
-    alive: 1
+    alive: 15
     wait: 30
     dependencies:
-        - 04t4W000002GpLoQAK #OmniStudio
+        - 04t4W000002ke26QAA #OmniStudio
         #- 04t4W000002kaNAQAY #HealthCloud
         - 04t1E000001AY4lQAG #Contacts & Organizations
         - 04t1E000000gbLrQAI #Households
