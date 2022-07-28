@@ -16,6 +16,7 @@ scratch_org:
         - 04t2E000003Dl6wQAC #Affiliations
         - 04t5j000000gyi3AAA #Nonprofit dependency
         - 04t5d000001YvaEAAS #Nonprofit Success Pack
+        #- 04t4N000000xBe0QAE #CPQ
     metadata: 'metadata/unpackaged'
     apex_suite: 'user_Registeration'
 package:
