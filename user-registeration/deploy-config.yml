@@ -7,7 +7,8 @@ scratch_org:
     alive: 15
     wait: 30
     dependencies:
-        - 04t4W000002ke26QAA #OmniStudio
+        - 04t4W000002kevmQAA #OmniStudio Winter 2023
+        - 04t6f000000Mo51AAC #Rollup Helper v17.21
         #- 04t4W000002kaNAQAY #HealthCloud
         - 04t1E000001AY4lQAG #Contacts & Organizations
         - 04t1E000000gbLrQAI #Households
